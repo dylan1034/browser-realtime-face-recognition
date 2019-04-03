@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import Camera from 'react-html5-camera-photo'
 import 'react-html5-camera-photo/build/css/index.css'
-import { Spin, Alert } from 'antd'
+import { Spin, Alert, Input, Tooltip, Icon } from 'antd'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face'
 
 // Import face profile
@@ -11,7 +11,7 @@ const JSON_PROFILE = require('../descriptors/face-db.json')
 const WIDTH = 420
 const HEIGHT = 420
 const inputSize = 160
-const face_scan_interval = 200  // ms
+const face_scan_interval = 1500  // ms
 
 class VideoInput extends Component {
   constructor(props) {
@@ -24,7 +24,9 @@ class VideoInput extends Component {
       faceMatcher: null,
       match: null,
       facingMode: null,
-      loading: true
+      loading: true,
+      showInput: false,
+      faceDescCache: null,
     }
   }
 
@@ -38,7 +40,7 @@ class VideoInput extends Component {
   async setInputDevice() {
     let devices = await navigator.mediaDevices.enumerateDevices()
     devices = devices.filter(device => device.kind === 'videoinput')
-    let state = {facingMode: {exact: 'environment'}}
+    let state = { facingMode: { exact: 'environment' } }
     if (devices.length < 2) {
       state.facingMode = 'user'
     }
@@ -79,11 +81,33 @@ class VideoInput extends Component {
     }
   }
 
+  async onTakePhoto(dataUri) {
+    const { faceMatcher } = this.state
+    let fullDesc = await getFullFaceDescription(dataUri, inputSize)
+    if (fullDesc.length !== 1) {
+      return null
+    }
+    let match = faceMatcher.findBestMatch(fullDesc[0].descriptor)
+    // if (match._label !== 'unknown') {
+    //   return null
+    // }
+    this.setState({
+      faceDescCache: fullDesc[0].descriptor,
+      showInput: true
+    })
+  }
+
+  async onPressEnter(name) {
+    // modify face-db.json
+    this.setState({ showInput: false })
+    return null
+  }
+
   render() {
     if (this.state.loading) {
       return (
         <Spin tip="Loading..." delay="200" size="large">
-          <Alert 
+          <Alert
             message="模型加载中"
             description="第一次打开时间可能较长，如果一直在加载，这边推荐亲科学上网..."
             type="info"
@@ -91,11 +115,11 @@ class VideoInput extends Component {
         </Spin>
       )
     }
-
-    const { detections, match, facingMode } = this.state
     
+    const { detections, match, facingMode, showInput } = this.state
+
     let videoConstraints = null
-    let camera = facingMode === 'user'? 'Front' : 'Back'
+    let camera = facingMode === 'user' ? 'Front' : 'Back'
     if (facingMode) {
       videoConstraints = {
         width: WIDTH,
@@ -156,16 +180,29 @@ class VideoInput extends Component {
         }}
       >
         <p>Camera: {camera}</p>
-        <div style={{ position: 'relative'}}>
+        <div style={{ position: 'relative' }}>
           {videoConstraints ? (
             <div className="inner" style={{ position: 'absolute' }}>
               <Camera
                 audio={false}
                 ref={this.webcam}
                 screenshotFormat="image/jpeg"
-                // videoConstraints={videoConstraints}
+                onTakePhoto={dataUri => this.onTakePhoto(dataUri)}
+              // videoConstraints={videoConstraints}
               />
             </div>
+          ) : null}
+          {showInput ? (
+            <Input
+              placeholder="Enter your username"
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              suffix={
+                <Tooltip title="Extra information">
+                  <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+                </Tooltip>
+              }
+              onPressEnter={name => this.onPressEnter(name)}
+            />
           ) : null}
           {drawBox}
         </div>
