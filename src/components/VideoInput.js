@@ -161,7 +161,7 @@ class VideoInput extends Component {
                     transform: `translate(0px,${_H}px)`
                   }}
                 >
-                  {match[i]._label}
+                  {match[i]._label}  ({1 - match[i]._distance})
                 </p>
               ) : null}
             </div>
@@ -188,7 +188,7 @@ class VideoInput extends Component {
                 ref={this.webcam}
                 screenshotFormat="image/jpeg"
                 onTakePhoto={dataUri => this.onTakePhoto(dataUri)}
-              // videoConstraints={videoConstraints}
+                // videoConstraints={videoConstraints}
               />
             </div>
           ) : null}
