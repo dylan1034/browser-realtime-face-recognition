@@ -1,7 +1,7 @@
 {
   "main.css": "/browser-realtime-face-recognition/static/css/main.23b4575f.chunk.css",
-  "main.js": "/browser-realtime-face-recognition/static/js/main.aa814bb4.chunk.js",
-  "main.js.map": "/browser-realtime-face-recognition/static/js/main.aa814bb4.chunk.js.map",
+  "main.js": "/browser-realtime-face-recognition/static/js/main.361365d0.chunk.js",
+  "main.js.map": "/browser-realtime-face-recognition/static/js/main.361365d0.chunk.js.map",
   "static/css/1.ae1e8faa.chunk.css": "/browser-realtime-face-recognition/static/css/1.ae1e8faa.chunk.css",
   "static/js/1.efb6eff5.chunk.js": "/browser-realtime-face-recognition/static/js/1.efb6eff5.chunk.js",
   "static/js/1.efb6eff5.chunk.js.map": "/browser-realtime-face-recognition/static/js/1.efb6eff5.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/media/test.jpg": "/browser-realtime-face-recognition/static/media/test.34e86f06.jpg",
   "static/css/main.23b4575f.chunk.css.map": "/browser-realtime-face-recognition/static/css/main.23b4575f.chunk.css.map",
   "index.html": "/browser-realtime-face-recognition/index.html",
-  "precache-manifest.deb8a2bba2bff2244f1d609f18ceac21.js": "/browser-realtime-face-recognition/precache-manifest.deb8a2bba2bff2244f1d609f18ceac21.js",
+  "precache-manifest.3be1892479e7e04841318e420c20e400.js": "/browser-realtime-face-recognition/precache-manifest.3be1892479e7e04841318e420c20e400.js",
   "service-worker.js": "/browser-realtime-face-recognition/service-worker.js"
 }
