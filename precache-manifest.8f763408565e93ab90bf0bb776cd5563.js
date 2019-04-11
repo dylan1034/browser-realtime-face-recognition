@@ -8,15 +8,15 @@ self.__precacheManifest = [
     "url": "/browser-realtime-face-recognition/static/js/runtime~main.3239acaf.js"
   },
   {
-    "revision": "c0ae6518e1e006722ce5",
-    "url": "/browser-realtime-face-recognition/static/js/main.c0ae6518.chunk.js"
+    "revision": "a3d7b1618dcc8e6224ac",
+    "url": "/browser-realtime-face-recognition/static/js/main.a3d7b161.chunk.js"
   },
   {
     "revision": "efb6eff58cb31a04743c",
     "url": "/browser-realtime-face-recognition/static/js/1.efb6eff5.chunk.js"
   },
   {
-    "revision": "c0ae6518e1e006722ce5",
+    "revision": "a3d7b1618dcc8e6224ac",
     "url": "/browser-realtime-face-recognition/static/css/main.23b4575f.chunk.css"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/browser-realtime-face-recognition/static/css/1.ae1e8faa.chunk.css"
   },
   {
-    "revision": "786c854a95a94c0b0cab9744e492001b",
+    "revision": "da2a41b2390da77076d8b18738e4dd98",
     "url": "/browser-realtime-face-recognition/index.html"
   }
 ];
