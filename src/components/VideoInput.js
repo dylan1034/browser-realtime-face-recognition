@@ -133,10 +133,24 @@ class VideoInput extends Component {
     // draw bounding box
     if (detections) {
       drawBox = detections.map((detection, i) => {
-        let _H = detection.box.height
-        let _W = detection.box.width
-        let _X = detection.box._x
-        let _Y = detection.box._y
+        let clientHeight = this.webcam.current.libCameraPhoto.videoElement.clientHeight
+        let clientWidth = this.webcam.current.libCameraPhoto.videoElement.clientWidth
+        let _H = null
+        let _W = null
+        let _X = null
+        let _Y = null
+        if (clientHeight < clientWidth) {
+          _H = detection.box.height / 480 * clientHeight * 0.9
+          _W = detection.box.width / 640 * clientWidth * 0.8
+          _X = clientWidth - detection.box._x / 640 * clientWidth * 1.1 - _W
+          _Y = detection.box._y / 480 * clientHeight * 0.9
+        } else {
+          _H = detection.box.height / 480 * clientHeight * 0.7
+          _W = detection.box.width / 640 * clientWidth * 0.9
+          _X = (clientWidth - detection.box._x / 640 * clientWidth - _W) * 0.55 * (2 - (detection.box._x + detection.box.width / 2) / (clientWidth * 0.5))
+          _Y = detection.box._y / 480 * clientHeight * 0.7
+        }
+
         return (
           <div key={i}>
             <div
