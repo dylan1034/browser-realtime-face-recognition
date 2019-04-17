@@ -71,7 +71,6 @@ class VideoInput extends Component {
         detections: fullDesc.map(fd => fd.detection),
         descriptors: fullDesc.map(fd => fd.descriptor)
       })
-      console.log(fullDesc.map(fd => fd.descriptor))
     }
 
     if (!!this.state.descriptors && !!this.state.faceMatcher) {
