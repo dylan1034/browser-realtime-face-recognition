@@ -95,7 +95,7 @@ class ImageInput extends Component {
                     transform: `translate(-3px,${_H}px)`
                   }}
                 >
-                  {match[i]._label}
+                  {match[i]._label}  ({1 - match[i]._distance})
                 </p>
               ) : null}
             </div>

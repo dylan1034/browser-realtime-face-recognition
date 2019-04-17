@@ -11,7 +11,7 @@ const JSON_PROFILE = require('../descriptors/face-db.json')
 const WIDTH = 420
 const HEIGHT = 420
 const inputSize = 160
-const face_scan_interval = 1500  // ms
+const face_scan_interval = 1000  // ms
 
 class VideoInput extends Component {
   constructor(props) {
@@ -147,7 +147,7 @@ class VideoInput extends Component {
         } else {
           _H = detection.box.height / 480 * clientHeight * 0.7
           _W = detection.box.width / 640 * clientWidth * 0.9
-          _X = (clientWidth - detection.box._x / 640 * clientWidth - _W) * 0.55 * (2 - (detection.box._x + detection.box.width / 2) / (clientWidth * 0.5))
+          _X = (clientWidth - detection.box._x / 640 * clientWidth - _W) * 0.6 * (2 - (detection.box._x + detection.box.width / 2) / (clientWidth * 0.6))
           _Y = detection.box._y / 480 * clientHeight * 0.7
         }
 
