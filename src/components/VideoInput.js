@@ -4,14 +4,25 @@ import Camera from 'react-html5-camera-photo'
 import 'react-html5-camera-photo/build/css/index.css'
 import { Spin, Alert, Input, Tooltip, Icon } from 'antd'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face'
+import axios from 'axios'
 
 // Import face profile
-const JSON_PROFILE = require('../descriptors/face-db.json')
+// const JSON_PROFILE = require('../descriptors/face-db.json')
+
+let face_db = null
+let face_match = null
 
 const WIDTH = 420
 const HEIGHT = 420
 const inputSize = 160
 const face_scan_interval = 1000  // ms
+
+const PREFIX = 'https://ssl.iblue.tech/'
+
+async function loadDescriptors() {
+  let response = await axios.get(PREFIX + 'api/face-db')
+  return response.data
+}
 
 class VideoInput extends Component {
   constructor(props) {
@@ -32,7 +43,8 @@ class VideoInput extends Component {
 
   async componentWillMount() {
     await loadModels()
-    let faceMatcher = await createMatcher(JSON_PROFILE)
+    face_db = await loadDescriptors()
+    let faceMatcher = await createMatcher(face_db)
     this.setState({ faceMatcher: faceMatcher, loading: false })
     await this.setInputDevice()
   }
@@ -71,6 +83,7 @@ class VideoInput extends Component {
         detections: fullDesc.map(fd => fd.detection),
         descriptors: fullDesc.map(fd => fd.descriptor)
       })
+      // console.log(fullDesc.map(fd => fd.descriptor))
     }
 
     if (!!this.state.descriptors && !!this.state.faceMatcher) {
@@ -82,15 +95,11 @@ class VideoInput extends Component {
   }
 
   async onTakePhoto(dataUri) {
-    const { faceMatcher } = this.state
     let fullDesc = await getFullFaceDescription(dataUri, inputSize)
     if (fullDesc.length !== 1) {
       return null
     }
-    let match = faceMatcher.findBestMatch(fullDesc[0].descriptor)
-    // if (match._label !== 'unknown') {
-    //   return null
-    // }
+    face_match = fullDesc[0].descriptor
     this.setState({
       faceDescCache: fullDesc[0].descriptor,
       showInput: true
@@ -98,7 +107,14 @@ class VideoInput extends Component {
   }
 
   async onPressEnter(name) {
-    // modify face-db.json
+    // modify face-db.json    
+    let nameGeted = name.target.value
+    let json = {};
+    // TODO nameGeted
+    json = {}
+    json[nameGeted] = {"name": "高鸣飞", "descriptors":  + [face_match]}
+    // json = { nameGeted : {"name": "高鸣飞", "descriptors": ',' + [face_match]}}
+    await axios.put(PREFIX + 'api/face-db', json)
     this.setState({ showInput: false })
     return null
   }
@@ -115,7 +131,7 @@ class VideoInput extends Component {
         </Spin>
       )
     }
-    
+
     const { detections, match, facingMode, showInput } = this.state
 
     let videoConstraints = null
@@ -202,7 +218,7 @@ class VideoInput extends Component {
                 ref={this.webcam}
                 screenshotFormat="image/jpeg"
                 onTakePhoto={dataUri => this.onTakePhoto(dataUri)}
-                // videoConstraints={videoConstraints}
+              // videoConstraints={videoConstraints}
               />
             </div>
           ) : null}
